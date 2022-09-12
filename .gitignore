@@ -9,6 +9,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+cronometro.png
+assets
 
 # macOS
 .DS_Store
