@@ -7,7 +7,9 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      numero: 0
+      numero: 0,
+      botao: 'VAI',
+      lastTime: null
     }
     this.timer = null
     this.vai = this.vai.bind(this)
@@ -19,14 +21,25 @@ class App extends Component {
     if(this.timer != null){
       clearInterval(this.timer)
       this.timer = null
+
+      this.setState({botao: 'VAI'})
     }else {
       this.timer = setInterval(() => {
         this.setState({numero: this.state.numero + 0.1})
       }, 100)
+      this.setState({botao: 'PARAR'})
     }
   }
   limpar(){
-
+    if(this.timer != null){
+      clearInterval(this.timer)
+      this.timer = null
+    }
+    this.setState({
+      lastTime: this.state.numero,
+      numero: 0,
+      botao: 'VAI'
+    })
   }
 
   render() {
@@ -38,13 +51,20 @@ class App extends Component {
 
         <View style={styles.btnContainer}>
           <TouchableOpacity style={styles.btn} onPress={this.vai}>
-            <Text style={styles.btnText}>VAI</Text>
+            <Text style={styles.btnText}> {this.state.botao}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.btn} onPress={this.limpar}>
             <Text style={styles.btnText}>LIMPAR</Text>
           </TouchableOpacity>
         </View>
+
+        <View style={styles.lastTimerContainer}>
+          <Text styl={styles.textTimer}>Último tempo: {
+            this.state.lastTime > 0 && this.state.lastTime.toFixed(2) + 's'
+          }</Text>
+        </View>
+
       </View>
     );
   }
@@ -84,4 +104,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#00aeef",
   },
+  lastTimerContainer: {
+    marginTop: 40,
+  },
+  textTimer: {
+    fontSize: 25,
+    fontStyle: 'italic',
+    color: '#fff',
+  }
 });
